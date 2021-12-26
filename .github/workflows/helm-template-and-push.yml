@@ -1,0 +1,63 @@
+name: helm-template-and-push
+
+on:
+  workflow_call:
+    inputs:
+      service_name:
+        required: true
+        type: string
+      repository:
+        required: true
+        type: string
+      destination_repo:
+        required: true
+        type: string
+      destination_folder:
+        required: true
+        type: string
+      user_email:
+        required: true
+        type: string
+      user_name:
+        required: true
+        type: string
+    secrets:
+      git_token:
+        required: true
+
+jobs:
+  helm-template-and-push:
+    name: Populate Helm template
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: latest
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ inputs.repository }}
+          token: ${{ secrets.git_token }}
+
+      - name: Update Helm dependencies
+        working-directory: ./deployment
+        run: helm dep update
+
+      - name: Generate Helm template
+        working-directory: ./deployment
+        run: helm template -f values.local.yaml ${{ inputs.service_name }} --set fabric-chart.image.registry=k3d-local-registry:2100 --set fabric-chart.image.tag="latest" . > ${{ inputs.service_name }}.yaml
+
+      - name: Push template into integration repo
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.git_token }}
+        with:
+          source_file: './deployment/${{ inputs.service_name }}.yaml'
+          destination_repo: '${{ inputs.destination_repo }}'
+          destination_folder: '${{ inputs.destination_folder }}'
+          user_email: '${{ inputs.user_email }}'
+          user_name: '${{ inputs.user_name }}'
+          commit_message: 'Updated ${{ inputs.service_name }}.yaml'
+          destination_branch: 'populate-helm-template-test'
