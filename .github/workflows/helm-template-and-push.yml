@@ -18,6 +18,9 @@ on:
       destination_folder:
         required: true
         type: string
+      commit_message:
+        required: true
+        type: string
       user_email:
         required: true
         type: string
@@ -41,7 +44,6 @@ jobs:
 
       - name: Install Helm
         uses: azure/setup-helm@v1
-        id: install
         with:
           version: latest
 
@@ -64,4 +66,4 @@ jobs:
           destination_folder: '${{ inputs.destination_folder }}'
           user_email: '${{ inputs.user_email }}'
           user_name: '${{ inputs.user_name }}'
-          commit_message: 'Updated ${{ inputs.service_name }}.yaml'
+          commit_message: '${{ inputs.commit_message }}'
