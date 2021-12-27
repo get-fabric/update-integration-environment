@@ -1,6 +1,7 @@
 name: helm-template-and-push
 
 on:
+  workflow_dispatch:
   workflow_call:
     inputs:
       service_name:
