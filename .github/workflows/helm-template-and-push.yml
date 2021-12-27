@@ -53,7 +53,7 @@ jobs:
 
       - name: Generate Helm template
         working-directory: ./deployment
-        run: helm template -f values.local.yaml ${{ inputs.service_name }} --set fabric-chart.image.registry=k3d-local-registry:2100 --set fabric-chart.image.tag="latest" . > ${{ inputs.service_name }}.yaml
+        run: helm template -f values.local.yaml ${{ inputs.service_name }} . > ${{ inputs.service_name }}.yaml
 
       - name: Push template into destination repo
         uses: dmnemec/copy_file_to_another_repo_action@eebb594efdf52bc12e1b461988d7254322dac131
