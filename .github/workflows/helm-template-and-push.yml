@@ -6,6 +6,9 @@ on:
       service_name:
         required: true
         type: string
+      commit_message:
+        required: true
+        type: string
     secrets:
       git_token:
         required: true
@@ -43,6 +46,6 @@ jobs:
           destination_repo: 'get-fabric/fulfillment-integration'
           destination_branch: 'main'
           destination_folder: 'deployments'
-          user_email: 'integration@getfabric.com'
-          user_name: 'integration'
-          commit_message: 'updated ${{ inputs.service_name }}'
+          user_email: 'fulfillment-integration@getfabric.com'
+          user_name: 'fulfillment-integration'
+          commit_message: '${{ inputs.commit_message }}'
