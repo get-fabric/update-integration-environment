@@ -1,31 +1,12 @@
 name: helm-template-and-push
 
 on:
-  workflow_dispatch:
   workflow_call:
     inputs:
       service_name:
         required: true
         type: string
-      repository:
-        required: true
-        type: string
-      destination_repo:
-        required: true
-        type: string
-      destination_branch:
-        required: true
-        type: string
-      destination_folder:
-        required: true
-        type: string
       commit_message:
-        required: true
-        type: string
-      user_email:
-        required: true
-        type: string
-      user_name:
         required: true
         type: string
     secrets:
@@ -40,7 +21,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          repository: ${{ inputs.repository }}
+          repository: get-fabric/${{ inputs.service_name }}
           token: ${{ secrets.git_token }}
 
       - name: Install Helm
@@ -62,9 +43,9 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.git_token }}
         with:
           source_file: './deployment/${{ inputs.service_name }}.yaml'
-          destination_repo: '${{ inputs.destination_repo }}'
-          destination_branch: '${{ inputs.destination_branch }}'
-          destination_folder: '${{ inputs.destination_folder }}'
-          user_email: '${{ inputs.user_email }}'
-          user_name: '${{ inputs.user_name }}'
+          destination_repo: 'get-fabric/fulfillment-integration'
+          destination_branch: 'main'
+          destination_folder: 'deployments'
+          user_email: 'fulfillment-integration@getfabric.com'
+          user_name: 'fulfillment-integration'
           commit_message: '${{ inputs.commit_message }}'
