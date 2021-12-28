@@ -1,4 +1,4 @@
-name: helm-template-and-push
+name: update-fulfillment-integration
 
 on:
   workflow_call:
@@ -14,7 +14,7 @@ on:
         required: true
 
 jobs:
-  helm-template-and-push:
+  update-fulfillment-integration-repo:
     name: Generate Helm template and Git push
     runs-on: ubuntu-latest
     steps:
