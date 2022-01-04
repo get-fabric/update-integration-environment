@@ -6,7 +6,11 @@ on:
       service_name:
         required: true
         type: string
-      commit_message:
+      namespace:
+        required: false
+        default: fulfillment
+        type: string
+      production_tag:
         required: true
         type: string
     secrets:
@@ -44,7 +48,7 @@ jobs:
           source_file: './deployment/${{ inputs.service_name }}.yaml'
           destination_repo: 'get-fabric/fulfillment-integration'
           destination_branch: 'main'
-          destination_folder: 'deployments'
+          destination_folder: 'deployments/${{ inputs.namespace }}'
           user_email: 'fulfillment-integration@getfabric.com'
           user_name: 'fulfillment-integration'
-          commit_message: '${{ inputs.commit_message }}'
+          commit_message: 'updated ${{ inputs.service_name }} with image ${{ inputs.production_tag }}'
