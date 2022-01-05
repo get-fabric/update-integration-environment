@@ -11,16 +11,7 @@ on:
         default: fulfillment
         type: string
       image_tag:
-        required: false
-        default: NA
-        type: string
-      production_tag:
-        required: false
-        default: NA
-        type: string
-      commit_message:
-        required: false
-        default: NA
+        required: true
         type: string
     secrets:
       git_token:
@@ -60,4 +51,4 @@ jobs:
           destination_folder: 'deployments/${{ inputs.namespace }}'
           user_email: 'fulfillment-integration@getfabric.com'
           user_name: 'fulfillment-integration'
-          commit_message: 'updated ${{ inputs.service_name }} with image ${{ inputs.image_tag }}'
+          commit_message: 'Update ${{ inputs.service_name }} with image ${{ inputs.image_tag }}'
