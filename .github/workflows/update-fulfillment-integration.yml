@@ -38,7 +38,7 @@ jobs:
 
       - name: Generate Helm template
         working-directory: ./deployment
-        run: helm template -f values.integration.yaml ${{ inputs.service_name }} . > ${{ inputs.service_name }}.yaml
+        run: helm template -f values.integration.yaml ${{ inputs.service_name }} --set fabric-chart.resources.requests.cpu=1m,fabric-chart.resources.requests.memory=1Mi . > ${{ inputs.service_name }}.yaml
 
       - name: Push template into destination repo
         uses: dmnemec/copy_file_to_another_repo_action@eebb594efdf52bc12e1b461988d7254322dac131
